@@ -1,6 +1,6 @@
 ---
 name: morning-briefing
-version: 1.3.1
+version: 1.3.2
 description: >
   Builds a self-contained daily kanban or end-of-day summary from connected
   mail, calendar, and task tools, or from pasted Jira, Obsidian, Notion,
@@ -62,11 +62,13 @@ If a tool errors, skip that source, name it in the one-line summary, and continu
 
 Map "last 48h, unread or flagged" to the provider's own syntax — don't assume the term "flagged" exists verbatim:
 
-| Source | Example query |
-|--------|---------------|
-| Gmail | `in:inbox newer_than:2d (is:unread OR is:starred)` |
-| Outlook | `isRead:false OR flag:flagged` with a 2-day date filter |
-| Jira | `assignee = currentUser() AND statusCategory != Done ORDER BY priority DESC` |
+| Source | Example query | Verified live? |
+|--------|---------------|-----------------|
+| Gmail | `in:inbox newer_than:2d (is:unread OR is:starred)` | Yes — ran against a real inbox |
+| Outlook | `isRead:false OR flag:flagged` with a 2-day date filter | No — written from Outlook's search syntax, not run against a live connector |
+| Jira | `assignee = currentUser() AND statusCategory != Done ORDER BY priority DESC` | No — standard JQL, not run against a live connector |
+
+The connector tool's own parameter schema is authoritative over this table — some connectors (e.g. Microsoft Graph-based Outlook tools) take structured filters (`isRead eq false`) instead of free-text search syntax. Treat unverified rows as a starting guess and adapt to what the tool actually accepts.
 
 ### Multi-message threads
 
