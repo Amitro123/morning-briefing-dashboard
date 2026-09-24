@@ -18,3 +18,5 @@ Read it and follow it whenever the user asks for:
 
 **Do not duplicate the instructions here.** `SKILL.md` is the single source of truth.
 The board HTML is produced only by `morning-briefing/scripts/render_board.py`.
+
+For a cheaper/faster run, delegate to the `morning-briefing` subagent (`.claude/agents/morning-briefing.md`), which runs this same skill on Haiku 4.5 instead of the main session's model.

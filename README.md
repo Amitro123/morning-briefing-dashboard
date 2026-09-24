@@ -87,6 +87,10 @@ Copy-Item -Recurse -Force morning-briefing "$env:USERPROFILE\.claude\skills\morn
 
 Drop this repo into your project root. The agent reads `CLAUDE.md` → follows `morning-briefing/SKILL.md` automatically.
 
+### Running on a cheaper model (Claude Code)
+
+The skill itself has no way to pick a model — `SKILL.md`'s frontmatter doesn't support a `model` field, since a skill is just instructions loaded into whatever session invokes it. To actually run this on a different model, use a **subagent** instead: `.claude/agents/morning-briefing.md` defines one pinned to Haiku 4.5. In Claude Code, delegating to it (directly, or via the pointer in `CLAUDE.md`) runs the same `SKILL.md` on a cheaper, faster model than the main session. It inherits every tool the main session has, including MCP connectors, so nothing else changes — this is worth it for the mostly-mechanical case (pull, classify against the tables in `SKILL.md`, write JSON, render); a brand-new, unverified connector still benefits from the main session's judgment (see Troubleshooting below).
+
 ---
 
 ## Connecting sources
@@ -156,6 +160,8 @@ morning-briefing-dashboard/
 ├── README.md                  ← you are here
 ├── CLAUDE.md                  ← IDE agent entry point → points to SKILL.md
 ├── morning-briefing.skill     ← built by tools/package_skill.py
+├── .claude/agents/
+│   └── morning-briefing.md    ← optional subagent, runs SKILL.md on Haiku 4.5
 └── morning-briefing/
     ├── SKILL.md               ← canonical spec (single source of truth)
     └── scripts/render_board.py
