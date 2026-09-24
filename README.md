@@ -1,6 +1,6 @@
 # Morning Briefing Dashboard — Claude Skill
 
-![version](https://img.shields.io/badge/version-1.3.3-blue)
+![version](https://img.shields.io/badge/version-1.3.4-blue)
 
 > One prompt → interactive daily kanban board, built from your real inbox, calendar, and tasks.
 
@@ -103,6 +103,19 @@ For paste-in sources (Jira board copy, Obsidian note, Notion export, etc.) — n
 
 ---
 
+## Troubleshooting
+
+Only the Gmail and Outlook (Microsoft 365) pull queries in `morning-briefing/SKILL.md` have been run against a real connector. Everything else in the Integrations table above — Jira, Linear, Asana, Notion, Monday, ClickUp, GitHub Issues, Slack, Teams — is written from each provider's general API/MCP conventions, not confirmed against a live account of that type. The Outlook row was wrong the first time (see the 1.3.3 changelog entry below), so treat the rest the same way: plausible, not guaranteed.
+
+If a connector doesn't pull what you expect — a source you know has data comes back empty, or a call errors out — that's most likely an unverified query rather than something wrong with your setup. Please [open an issue](../../issues) with:
+- which connector/source
+- what you expected vs. what actually came back
+- the query Claude used, if it's visible in the conversation
+
+That's exactly how the Outlook row got fixed, and it's the fastest way to get the next source corrected in `SKILL.md`.
+
+---
+
 ## Usage
 
 ```
@@ -147,6 +160,7 @@ morning-briefing-dashboard/
 
 | Version | What changed |
 |---------|-------------|
+| **1.3.4** | Handle silent query failures: an unverified source returning zero results now gets a sanity-check re-run (no filter) instead of being reported as "clean inbox" — a bad filter can be silently ignored rather than erroring, which is what the original Outlook guess would have done. Added a README "Troubleshooting" section pointing at opening an issue when a connector doesn't behave as documented. |
 | **1.3.3** | Verified the Outlook pull row against a live Microsoft 365 connector: `outlook_email_search` has no read/flag query syntax and doesn't return a flag field at all — the guessed "unread or flagged" query from 1.3.1 was wrong, not just untested. Replaced it with the actual working approach (date-range parameter + client-side `isRead` filter, no flagged support) and marked it verified. |
 | **1.3.2** | Marked which example pull queries were actually run against a live connector (only Gmail, in this project's testing) versus written from provider docs and unverified (Outlook, Jira). Noted that a connector's own tool schema overrides the example table when they conflict. |
 | **1.3.1** | Pull step: example Gmail/Outlook/Jira queries, a note on threads that preview only their oldest messages, a rule for labeling product notifications pulled via email, and a caution against reusing a generic fallback `url` (the renderer dedupes cards by `url`). Timezone question now only applies when a calendar card is present. README preview image regenerated from `render_board.py` with fake data. |

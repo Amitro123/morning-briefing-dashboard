@@ -1,6 +1,6 @@
 ---
 name: morning-briefing
-version: 1.3.3
+version: 1.3.4
 description: >
   Builds a self-contained daily kanban or end-of-day summary from connected
   mail, calendar, and task tools, or from pasted Jira, Obsidian, Notion,
@@ -57,6 +57,10 @@ Priority: email, then calendar, then tasks. Chat last, and only as the fallback 
 | Teams | `teams_chat_message_search` | fallback only |
 
 If a tool errors, skip that source, name it in the one-line summary, and continue.
+
+### Empty results from an unverified source
+
+A zero-result query isn't proof there's nothing to pull — the filter may have been silently ignored instead of erroring (this is exactly what the original Outlook guess in this project would have done: no error, just an empty match, because the query text wasn't a syntax that tool understood). For any source not marked "Verified live" in the table below, don't treat an empty result as "nothing to report" without a quick sanity check: re-run the same tool with no filter, or a wider one, for the same window. If that also comes back empty, the source really is empty. If it returns items, the filter itself is probably wrong — say so in the one-line summary (don't silently present an empty board as a clean inbox), and tell the user to open an issue with the exact query if a source they know has data still comes back blank.
 
 ### Example queries
 
