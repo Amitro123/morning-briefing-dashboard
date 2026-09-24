@@ -1,8 +1,12 @@
 # Morning Briefing Dashboard — Claude Skill
 
-![version](https://img.shields.io/badge/version-1.3.0-blue)
+![version](https://img.shields.io/badge/version-1.3.1-blue)
 
 > One prompt → interactive daily kanban board, built from your real inbox, calendar, and tasks.
+
+![Morning Briefing Dashboard — sample board with fake data](screenshot.png)
+
+*Sample board rendered by `scripts/render_board.py` from fake data — not a real inbox.*
 
 ---
 
@@ -143,6 +147,7 @@ morning-briefing-dashboard/
 
 | Version | What changed |
 |---------|-------------|
+| **1.3.1** | Pull step: example Gmail/Outlook/Jira queries, a note on threads that preview only their oldest messages, a rule for labeling product notifications pulled via email, and a caution against reusing a generic fallback `url` (the renderer dedupes cards by `url`). Timezone question now only applies when a calendar card is present. README preview image regenerated from `render_board.py` with fake data. |
 | **1.3.0** | One packaged spec. The board is rendered by `scripts/render_board.py` (escaped text, safe links, dedupe, caps, overlap, local edits). Claude Code installs under `~/.claude/skills`. Every README source has an explicit pull or paste rule. |
 | **1.2.0** | Dynamic connector detection — Jira, Linear, Asana, Monday, GitHub Issues, ClickUp auto-detected at runtime. No skill update needed when adding new connectors. |
 | **1.1.0** | Generic rewrite — removed Microsoft-specific hardcoding. Works with any email/calendar/task source. Token efficiency rules added. |
