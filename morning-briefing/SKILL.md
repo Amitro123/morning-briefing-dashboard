@@ -1,6 +1,6 @@
 ---
 name: morning-briefing
-version: 1.3.6
+version: 1.3.7
 description: >
   Builds a self-contained daily kanban or end-of-day summary from connected
   mail, calendar, and task tools, or from pasted Jira, Obsidian, Notion,
@@ -39,7 +39,7 @@ Set `lang` from the user's message (`he` or `en`), not from the language of the 
 
 ## 2. Pull
 
-Priority: email, then calendar, then tasks. Chat last, and only as the fallback above.
+Priority: email, then calendar, then tasks. Chat last, and only as the fallback above. This is an importance order for what to read, not a sequencing rule — sources with no dependency on each other (two mail connectors, or mail alongside calendar) are independent reads. Call them in the same turn rather than one after another; there's no reason a Gmail search and an Outlook search, say, can't run concurrently.
 
 | Source | Hints | What to keep |
 |--------|-------|----------------|
