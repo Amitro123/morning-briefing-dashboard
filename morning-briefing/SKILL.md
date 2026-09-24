@@ -1,6 +1,6 @@
 ---
 name: morning-briefing
-version: 1.3.2
+version: 1.3.3
 description: >
   Builds a self-contained daily kanban or end-of-day summary from connected
   mail, calendar, and task tools, or from pasted Jira, Obsidian, Notion,
@@ -41,7 +41,7 @@ Priority: email, then calendar, then tasks. Chat last, and only as the fallback 
 
 | Source | Hints | What to keep |
 |--------|-------|----------------|
-| Outlook / Microsoft 365 mail | `outlook_email_search` | last 48h, unread or flagged, limit 10 |
+| Outlook / Microsoft 365 mail | `outlook_email_search` | last 48h, unread, limit 10 — see Example queries below, this tool has no flagged filter |
 | Gmail / Google Workspace | `gmail_search_threads`, `google_mail_*` | last 48h, unread or flagged, limit 10 |
 | Outlook Calendar | `outlook_calendar_search` | today, limit 10 |
 | Google Calendar | `google_calendar_list_events`, `gcal_*` | today, limit 10 |
@@ -62,13 +62,13 @@ If a tool errors, skip that source, name it in the one-line summary, and continu
 
 Map "last 48h, unread or flagged" to the provider's own syntax — don't assume the term "flagged" exists verbatim:
 
-| Source | Example query | Verified live? |
-|--------|---------------|-----------------|
-| Gmail | `in:inbox newer_than:2d (is:unread OR is:starred)` | Yes — ran against a real inbox |
-| Outlook | `isRead:false OR flag:flagged` with a 2-day date filter | No — written from Outlook's search syntax, not run against a live connector |
+| Source | How to pull "last 48h, unread" | Verified live? |
+|--------|---------------------------------|-----------------|
+| Gmail | Single query string: `in:inbox newer_than:2d (is:unread OR is:starred)` | Yes — ran against a real inbox |
+| Outlook (Microsoft 365 connector) | The search tool has no read/flag query syntax and no `flag`/`isFlagged` field in its results at all. Call it with `afterDateTime` set to 48h ago (its own parameter, not a query string) and `order: newest`, then filter the returned items client-side on `isRead === false`. Flagged status cannot be pulled through this tool — drop "or flagged" for this source. | Yes — ran against a real mailbox; confirmed no query-syntax or flag support |
 | Jira | `assignee = currentUser() AND statusCategory != Done ORDER BY priority DESC` | No — standard JQL, not run against a live connector |
 
-The connector tool's own parameter schema is authoritative over this table — some connectors (e.g. Microsoft Graph-based Outlook tools) take structured filters (`isRead eq false`) instead of free-text search syntax. Treat unverified rows as a starting guess and adapt to what the tool actually accepts.
+A connector's own parameter schema is authoritative over this table and over the general "unread or flagged" instruction above — the Outlook row is a concrete example of a connector where that instruction can't be followed literally. Read the tool's actual parameters before assuming it accepts a query-string filter.
 
 ### Multi-message threads
 

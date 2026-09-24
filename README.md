@@ -1,6 +1,6 @@
 # Morning Briefing Dashboard — Claude Skill
 
-![version](https://img.shields.io/badge/version-1.3.2-blue)
+![version](https://img.shields.io/badge/version-1.3.3-blue)
 
 > One prompt → interactive daily kanban board, built from your real inbox, calendar, and tasks.
 
@@ -147,6 +147,7 @@ morning-briefing-dashboard/
 
 | Version | What changed |
 |---------|-------------|
+| **1.3.3** | Verified the Outlook pull row against a live Microsoft 365 connector: `outlook_email_search` has no read/flag query syntax and doesn't return a flag field at all — the guessed "unread or flagged" query from 1.3.1 was wrong, not just untested. Replaced it with the actual working approach (date-range parameter + client-side `isRead` filter, no flagged support) and marked it verified. |
 | **1.3.2** | Marked which example pull queries were actually run against a live connector (only Gmail, in this project's testing) versus written from provider docs and unverified (Outlook, Jira). Noted that a connector's own tool schema overrides the example table when they conflict. |
 | **1.3.1** | Pull step: example Gmail/Outlook/Jira queries, a note on threads that preview only their oldest messages, a rule for labeling product notifications pulled via email, and a caution against reusing a generic fallback `url` (the renderer dedupes cards by `url`). Timezone question now only applies when a calendar card is present. README preview image regenerated from `render_board.py` with fake data. |
 | **1.3.0** | One packaged spec. The board is rendered by `scripts/render_board.py` (escaped text, safe links, dedupe, caps, overlap, local edits). Claude Code installs under `~/.claude/skills`. Every README source has an explicit pull or paste rule. |
