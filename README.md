@@ -12,7 +12,7 @@
 
 ## ⬇️ Install
 
-**[Download morning-briefing.skill →](https://github.com/Amitro123/morning-briefing-dashboard/releases/latest/download/morning-briefing.skill)**
+**[Download morning-briefing.skill →](https://raw.githubusercontent.com/Amitro123/morning-briefing-dashboard/main/morning-briefing.skill)**
 
 Then: Claude Desktop → Cowork → Plugins → **Install from file**
 
@@ -68,7 +68,7 @@ The skill is **connector-agnostic** — it detects whatever is installed and pul
 
 ### Option 1 — Cowork (Claude Desktop) ✅ Recommended
 
-1. **[Download morning-briefing.skill](https://github.com/Amitro123/morning-briefing-dashboard/releases/latest/download/morning-briefing.skill)**
+1. **[Download morning-briefing.skill](https://raw.githubusercontent.com/Amitro123/morning-briefing-dashboard/main/morning-briefing.skill)**
 2. Claude Desktop → Cowork → Plugins → **Install from file** → select the `.skill` file
 
 ### Option 2 — Claude Code (CLI)

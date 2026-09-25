@@ -1,0 +1,42 @@
+name: Release skill package
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to publish"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - run: test -s morning-briefing.skill || { echo "::error::morning-briefing.skill missing or empty"; exit 1; }
+
+      - name: Warn if the packaged skill is stale
+        run: |
+          if [ morning-briefing.skill -ot morning-briefing/SKILL.md ] \
+             || [ morning-briefing.skill -ot morning-briefing/scripts/render_board.py ]; then
+            echo "::warning::morning-briefing.skill is older than morning-briefing/ — run 'python tools/package_skill.py' and commit before releasing."
+          fi
+
+      - name: Create GitHub release and upload asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ inputs.tag || github.ref_name }}" \
+            morning-briefing.skill \
+            --title "${{ inputs.tag || github.ref_name }}" \
+            --generate-notes \
+            --verify-tag
