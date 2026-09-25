@@ -1,0 +1,13 @@
+{
+  "name": "morning-briefing",
+  "displayName": "Morning Briefing Dashboard",
+  "description": "Daily kanban dashboard or end-of-day summary built from your mail, calendar, and tasks. Includes an optional morning-briefing subagent pinned to Haiku 4.5 for cheaper/faster runs.",
+  "version": "1.3.7",
+  "author": {
+    "name": "Amitro123"
+  },
+  "homepage": "https://github.com/Amitro123/morning-briefing-dashboard",
+  "repository": "https://github.com/Amitro123/morning-briefing-dashboard",
+  "license": "MIT",
+  "keywords": ["morning-briefing", "dashboard", "kanban", "email", "calendar", "standup", "productivity"]
+}
