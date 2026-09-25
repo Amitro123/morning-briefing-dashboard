@@ -110,6 +110,16 @@ The skill itself has no way to pick a model — `SKILL.md`'s frontmatter doesn't
 
 **Verified working**, not just theoretical: run in a fresh Claude Code session against a real Gmail + Google Calendar account, the subagent registered correctly, self-reported running as `claude-haiku-4-5-20251001`, pulled real mail, classified it (skipping newsletters, correctly labeling a GitHub PR notification pulled via email as `source_label: "GitHub"` per the rule in `SKILL.md`), and rendered a working board — `render_board.py` exited 0. This is worth it for the mostly-mechanical case (pull, classify against the tables in `SKILL.md`, write JSON, render); a brand-new, unverified connector still benefits from the main session's judgment (see Troubleshooting below).
 
+### Running on a cheaper model (Cowork, or any host with a generic Agent/Task tool)
+
+Claude Code discovers `.claude/agents/morning-briefing.md` on its own — it's a file in the repo, scanned automatically, with `model: haiku` in its frontmatter. Cowork (and other hosts without that same repo-scanning subagent mechanism) has no equivalent file to discover. Instead it exposes a generic `Agent` tool that the main session calls directly, passing `model: "haiku"` as a parameter on that one call.
+
+The practical difference: in Claude Code the delegation is *declarative* (the subagent file just exists, ready to be pointed at). In Cowork it's *imperative* — the main session has to spawn the subagent itself, and since that subagent starts with zero memory of the conversation (it can't read this repo's `SKILL.md` the way the main session did), its prompt has to restate steps 1–5 in full: the pull rules, the classification tables, the JSON schema, and the exact render command. `SKILL.md`'s "Delegate to a cheaper model when possible" section spells this out so the behavior is documented in one place regardless of which host is running it.
+
+**Verified working** in Cowork against a real Microsoft 365 connector: the main session spawned a `general-purpose` agent pinned to `model: "haiku"` with a self-contained prompt, and that subagent pulled unread Outlook mail from the last 48h, classified it against the tables in `SKILL.md`, wrote the JSON payload, and rendered the board with `render_board.py` — output matched a same-session run on the main model, just cheaper and faster.
+
+If a repo containing `.claude/agents/morning-briefing.md` happens to be attached to a Cowork session too, that session picks up the declarative subagent the same way Claude Code does — the generic-Agent-tool fallback only applies when no such subagent is discoverable.
+
 ---
 
 ## Connecting sources
